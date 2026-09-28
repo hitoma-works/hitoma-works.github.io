@@ -236,6 +236,18 @@ const multiple = items.length > 1;
 
   /* 拡大表示 */
   .lightbox {
+    /* 画像の大きさをキャプションの行数に左右させないため、まわりの寸法を定数にして引き算する */
+    --lb-pad-top: 64px;
+    --lb-pad-x: 12px;
+    --lb-pad-bottom: 16px;
+    --lb-gap: 12px;
+    --lb-cap-line: 1.4rem; /* 0.875rem × 1.6 */
+    --lb-count-line: 1.2rem; /* 0.75rem × 1.6 */
+    /* キャプションは alt 2 行ぶん＋「n / N」の高さで固定する */
+    --lb-cap-height: calc(var(--lb-cap-line) * 2 + var(--lb-count-line));
+    --lb-chrome: calc(
+      var(--lb-pad-top) + var(--lb-pad-bottom) + var(--lb-gap) + var(--lb-cap-height)
+    );
     position: fixed;
     inset: 0;
     width: 100%;
@@ -260,38 +272,48 @@ const multiple = items.length > 1;
     justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 64px 12px 16px;
+    padding: var(--lb-pad-top) var(--lb-pad-x) var(--lb-pad-bottom);
   }
   .lb-figure {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: var(--lb-gap);
     max-width: 100%;
-    max-height: 100%;
-    min-height: 0;
     margin: 0;
   }
   .lb-img {
-    flex: 0 1 auto;
+    /* 縮まない。高さは常に「画面の高さ − まわりの寸法」で、どの画像でも同じになる
+       （縦長なので普通は高さで決まり、横幅が先に当たるときだけ幅で決まる） */
+    flex: 0 0 auto;
     width: auto;
     height: auto;
     max-width: 100%;
-    max-height: 100%;
-    min-height: 0;
+    max-height: calc(100vh - var(--lb-chrome)); /* dvh が無い環境向け */
+    max-height: calc(100dvh - var(--lb-chrome));
     object-fit: contain;
     border-radius: var(--shot-radius);
   }
   .lb-cap {
     flex: 0 0 auto;
+    min-height: var(--lb-cap-height);
     max-width: 44ch;
     color: var(--on-scrim);
     font-size: 0.875rem;
-    line-height: 1.6;
+    line-height: var(--lb-cap-line);
     text-align: center;
+  }
+  .lb-alt {
+    /* 3 行になる長い alt は 2 行で切る（固定した高さを越えさせない） */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
   }
   .lb-count {
     display: block;
+    line-height: var(--lb-count-line);
     opacity: 0.75;
     font-size: 0.75rem;
   }
@@ -336,8 +358,10 @@ const multiple = items.length > 1;
     right: 8px;
   }
   @media (min-width: 600px) {
-    .lb-inner {
-      padding: 72px 72px 20px;
+    .lightbox {
+      --lb-pad-top: 72px;
+      --lb-pad-x: 72px;
+      --lb-pad-bottom: 20px;
     }
     .lb-prev {
       left: 16px;
