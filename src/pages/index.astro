@@ -29,7 +29,7 @@ const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is stri
     <p class="eyebrow">CONTACT</p>
     <h2 class="section-title" id="contact">お問い合わせ</h2>
     <p>アプリやこのサイトについてのお問い合わせは、メールでお送りください。</p>
-    <p class="mail"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    <p class="mail"><a class="mail-link" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
   </section>
 </Base>
 
@@ -59,22 +59,32 @@ const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is stri
     font-size: 0.875rem;
   }
   .contact {
-    padding: 32px 24px;
-    border-radius: var(--radius);
-    background: var(--accent);
-    color: var(--on-accent);
-  }
-  .contact .eyebrow,
-  .contact a {
-    color: var(--on-accent);
+    padding: 32px 0 8px;
+    border-top: 1px solid var(--line);
   }
   .contact .section-title {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+  }
+  .contact p {
+    color: var(--text-sub);
   }
   .contact .mail {
-    margin: 0;
-    font-size: 1.15rem;
+    margin: 16px 0 0;
+  }
+  .mail-link {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--text);
+    color: var(--text);
     font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+  .mail-link:hover {
+    background: var(--text);
+    color: var(--bg);
   }
   .section-title[id] {
     scroll-margin-top: 24px;
