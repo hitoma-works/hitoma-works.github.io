@@ -8,9 +8,23 @@ storeLinks: {}
 #  googlePlay: https://play.google.com/store/apps/details?id=works.hitoma.nagaraeitango
 #  appStore: https://apps.apple.com/jp/app/...
 # 画面の画像。src/assets/apps/nagara-eitango/ に置いて並べる（空のあいだは枠だけ）
-screenshots: []
-#  - src: ../../../assets/apps/nagara-eitango/1.png
-#    alt: 再生中の画面
+screenshots:
+  - src: ../../../assets/apps/nagara-eitango/1.png
+    alt: ホーム。ながら聞き・○✕で覚える・テストの 3 つの入口
+  - src: ../../../assets/apps/nagara-eitango/2.png
+    alt: 再生画面。読み上げ中の要素がハイライトされる
+  - src: ../../../assets/apps/nagara-eitango/3.png
+    alt: ○✕で覚える。答えを見て、わかる・わからないで判定
+  - src: ../../../assets/apps/nagara-eitango/4.png
+    alt: 単語一覧。右端の帯でセクションへ飛べる
+  - src: ../../../assets/apps/nagara-eitango/5.png
+    alt: カード詳細。意味・例文・解説・関連表現
+  - src: ../../../assets/apps/nagara-eitango/6.png
+    alt: プリセット編集。読み上げる要素と順番、回数、間を決める
+  - src: ../../../assets/apps/nagara-eitango/7.png
+    alt: 聞いて答える。語を聞いて、思い出せたかを ○✕ で答える
+  - src: ../../../assets/apps/nagara-eitango/8.png
+    alt: 統計。連続日数、学習した語、定着度
 requirements: Android 10 以上、iOS 26 以上に対応する予定です。
 notice: TOEIC is a registered trademark of ETS. This product is not endorsed or approved by ETS.
 privacyEstablished: 2026-09-28
