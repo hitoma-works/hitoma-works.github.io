@@ -80,4 +80,4 @@ scripts/fonts.mjs                     fonts.css を作る
 ## 仮置き（公開前に直す）
 - 連絡先 `info@hitoma.works`（`src/lib/site.ts` と各 md）。メールが受け取れることを確かめる。
 - ストアのボタンは `#` の「準備中」、中身は文字の仮置き。公開したら URL を `storeLinks` に入れ、公式のバッジ画像（Google Play・Apple の配布物、各社のガイドラインに従う）に `src/components/StoreButtons.astro` を差し替える。
-- スクリーンショットは枠だけ。アイコンは文字「な」。
+- スクリーンショットは枠だけ。
