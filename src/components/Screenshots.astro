@@ -1,0 +1,63 @@
+---
+import { Image } from 'astro:assets';
+import type { App } from '../lib/apps';
+
+interface Props {
+  app: App;
+  /** 画像が無いときの枠の数 */
+  placeholders?: number;
+}
+
+const { app, placeholders = 3 } = Astro.props;
+const shots = app.data.screenshots;
+---
+
+<div class="shots">
+  {
+    shots.length > 0
+      ? shots.map((s) => <Image class="shot" src={s.src} alt={s.alt} width={360} />)
+      : Array.from({ length: placeholders }, () => (
+          <div class="shot frame">
+            スクリーン
+            <br />
+            ショット
+            <br />
+            （準備中）
+          </div>
+        ))
+  }
+</div>
+
+<style>
+  .shots {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+  }
+  .shot {
+    flex: 0 0 auto;
+    width: 150px;
+    aspect-ratio: 9 / 19.5;
+    border-radius: 18px;
+    object-fit: cover;
+    scroll-snap-align: start;
+  }
+  .frame {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    color: var(--text-sub);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  @media (min-width: 600px) {
+    .shot {
+      width: 180px;
+    }
+  }
+</style>

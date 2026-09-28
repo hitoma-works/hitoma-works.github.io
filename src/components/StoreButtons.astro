@@ -1,0 +1,86 @@
+---
+import type { App } from '../lib/apps';
+
+interface Props {
+  app: App;
+}
+
+const { platforms, storeLinks } = Astro.props.app.data;
+
+const buttons = [
+  platforms.includes('Android') && { label: 'Google Play', sub: 'で手に入れよう', href: storeLinks.googlePlay },
+  platforms.includes('iOS') && { label: 'App Store', sub: 'からダウンロード', href: storeLinks.appStore },
+].filter((b) => !!b);
+// 公開したら公式のバッジ画像（各社のガイドラインに従う）に差し替える
+---
+
+<ul class="stores">
+  {
+    buttons.map((b) =>
+      b.href ? (
+        <li>
+          <a class="store" href={b.href}>
+            <small>{b.sub}</small>
+            <span>{b.label}</span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <a class="store soon" href="#" aria-disabled="true">
+            <small>準備中</small>
+            <span>{b.label}</span>
+          </a>
+        </li>
+      ),
+    )
+  }
+</ul>
+
+<style>
+  .stores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stores li {
+    flex: 1 1 128px;
+    max-width: 200px;
+  }
+  .store {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 48px;
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--store-bg);
+    color: #ffffff;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+  .store small {
+    font-size: 0.6875rem;
+    opacity: 0.85;
+  }
+  .store span {
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .soon {
+    cursor: default;
+  }
+  .soon small {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--store-bg);
+    font-weight: 700;
+    opacity: 1;
+  }
+</style>

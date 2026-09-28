@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+import { getAppIcon } from '../lib/apps';
+
+interface Props {
+  slug: string;
+  name: string;
+  size?: number;
+}
+
+const { slug, name, size = 64 } = Astro.props;
+const icon = getAppIcon(slug);
+// 画像が無いときは名前の 1 文字目（「な」）を丸角四角に
+const letter = Array.from(name)[0] ?? '';
+---
+
+{
+  icon ? (
+    <Image class="icon" src={icon} alt="" width={size} height={size} densities={[1, 2, 3]} style={`--size:${size}px`} />
+  ) : (
+    <span class="icon letter" aria-hidden="true" style={`--size:${size}px`}>
+      {letter}
+    </span>
+  )
+}
+
+<style>
+  .icon {
+    flex: 0 0 auto;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 22.5%;
+  }
+  .letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent);
+    /* アイコンは飾り（名前は横に文字で出す）。白抜きの字 */
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: calc(var(--size) * 0.5);
+    line-height: 1;
+    letter-spacing: 0;
+  }
+</style>

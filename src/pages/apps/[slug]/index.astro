@@ -1,0 +1,88 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import AppIcon from '../../../components/AppIcon.astro';
+import Screenshots from '../../../components/Screenshots.astro';
+import StoreButtons from '../../../components/StoreButtons.astro';
+import { getApps, privacyUrl, supportUrl, type App } from '../../../lib/apps';
+
+export const getStaticPaths = (async () => {
+  const apps = await getApps();
+  return apps.map((app) => ({ params: { slug: app.id }, props: { app } }));
+}) satisfies GetStaticPaths;
+
+const { app } = Astro.props as { app: App };
+const { name, tagline, description, requirements, notice } = app.data;
+const { Content } = await render(app);
+---
+
+<Base title={name} description={description}>
+  <section class="hero">
+    <AppIcon slug={app.id} name={name} size={88} />
+    <h1>{name}</h1>
+    <p class="lead">{tagline}</p>
+  </section>
+
+  <section class="section" aria-labelledby="features">
+    <p class="eyebrow">FEATURES</p>
+    <h2 class="section-title" id="features">特長</h2>
+    <div class="features">
+      <Content />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="screens">
+    <p class="eyebrow">SCREENS</p>
+    <h2 class="section-title" id="screens">画面</h2>
+    <Screenshots app={app} />
+  </section>
+
+  <section class="section" aria-labelledby="download">
+    <p class="eyebrow">DOWNLOAD</p>
+    <h2 class="section-title" id="download">ダウンロード</h2>
+    <StoreButtons app={app} />
+    {requirements && <p class="muted small req">{requirements}</p>}
+  </section>
+
+  <section class="section" aria-labelledby="links">
+    <p class="eyebrow">SUPPORT</p>
+    <h2 class="section-title" id="links">サポート</h2>
+    <ul class="link-list">
+      <li><a href={supportUrl(app.id)}>サポート・よくある質問</a></li>
+      <li><a href={privacyUrl(app.id)}>プライバシーポリシー</a></li>
+    </ul>
+  </section>
+
+  {notice && <p class="notice">{notice}</p>}
+</Base>
+
+<style>
+  .hero h1 {
+    font-size: clamp(1.75rem, 7vw, 2.25rem);
+    margin: 20px 0 8px;
+  }
+  .req {
+    margin-top: 12px;
+  }
+  /* 本文（Markdown）の箇条書き：- **見出し**説明 */
+  .features :global(ul) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+  .features :global(li) {
+    padding: 18px 20px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+  }
+  .features :global(li strong) {
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--font-heading);
+    font-weight: 900;
+    font-size: 1.05rem;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import AppCard from '../components/AppCard.astro';
+import { getApps } from '../lib/apps';
+import { SITE } from '../lib/site';
+
+const apps = await getApps();
+const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is string => !!n))];
+---
+
+<Base description={SITE.description}>
+  <section class="hero">
+    <p class="eyebrow">INDIE APP STUDIO</p>
+    <h1>ながらで学べる、<wbr />スマホアプリをつくる。</h1>
+    <p class="lead">{SITE.description}</p>
+  </section>
+
+  <section class="section" aria-labelledby="apps">
+    <p class="eyebrow">APPS</p>
+    <h2 class="section-title" id="apps">アプリ</h2>
+    <div class="app-list">
+      {apps.map((app) => <AppCard app={app} />)}
+      <div class="next">次のアプリ（準備中）</div>
+    </div>
+    {notices.map((n) => <p class="notice">{n}</p>)}
+  </section>
+
+  <section class="section contact" aria-labelledby="contact">
+    <p class="eyebrow">CONTACT</p>
+    <h2 class="section-title" id="contact">お問い合わせ</h2>
+    <p>アプリやこのサイトについてのお問い合わせは、メールでお送りください。</p>
+    <p class="mail"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding: 8px 0;
+  }
+  .hero h1 {
+    font-size: clamp(1.75rem, 7.4vw, 2.5rem);
+    line-height: 1.35;
+    margin-bottom: 20px;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .app-list {
+    display: grid;
+    gap: 20px;
+  }
+  .next {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    border: 2px dashed var(--line);
+    border-radius: var(--radius);
+    color: var(--text-mute);
+    font-size: 0.875rem;
+  }
+  .contact {
+    padding: 32px 24px;
+    border-radius: var(--radius);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .contact .eyebrow,
+  .contact a {
+    color: var(--on-accent);
+  }
+  .contact .section-title {
+    margin-bottom: 12px;
+  }
+  .contact .mail {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+  .section-title[id] {
+    scroll-margin-top: 24px;
+  }
+</style>

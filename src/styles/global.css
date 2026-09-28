@@ -1,0 +1,208 @@
+/* hitoma works — 共通のスタイル（色・文字・余白は CSS 変数で。ページ固有のものは各 .astro の scoped CSS） */
+
+:root {
+  /* 色（2026-09-28 Ko：A 案「白地・余白広め」＋アクセントはコーラル） */
+  --bg: #ffffff;
+  --text: #111827;
+  --text-sub: #4b5563; /* 薄い文字 */
+  --text-mute: #6b7280; /* もっと薄い文字 */
+  --surface: #f3f4f6; /* カードの地 */
+  --line: #e5e7eb; /* 線 */
+  --accent: #ff6b5b; /* コーラル：アイコンの地、お問い合わせの箱の地、飾り */
+  --on-accent: #3b1a14; /* コーラルの上の文字（#ff6b5b に対して 5.6:1） */
+  --link: #c8473a; /* リンクの文字（白地に対して 4.7:1） */
+  --eyebrow: #c8473a; /* 英字の小見出しの文字（コーラルそのままだと白地で 2.8:1 と薄すぎるので濃い方） */
+  --store-bg: #111827; /* ストアの黒いボタン */
+
+  /* 文字 */
+  --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Yu Gothic',
+    Meiryo, system-ui, sans-serif;
+  --font-heading: 'Zen Kaku Gothic New', var(--font-body);
+
+  /* 寸法 */
+  --max: 720px;
+  --gutter: 20px;
+  --radius: 16px;
+  --radius-sm: 10px;
+
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.85;
+  letter-spacing: 0.02em;
+  overflow-wrap: anywhere;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+  margin: 0;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 16px;
+}
+
+strong,
+b {
+  font-weight: 700;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* 英字の小見出し（INDIE APP STUDIO / APPS / CONTACT など） */
+.eyebrow {
+  display: block;
+  margin: 0 0 12px;
+  color: var(--eyebrow);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+}
+
+/* セクション見出し */
+.section {
+  margin-top: 72px;
+}
+.section-title {
+  font-size: 1.5rem;
+  margin-bottom: 24px;
+}
+
+.lead {
+  color: var(--text-sub);
+  font-size: 1.05rem;
+}
+.muted {
+  color: var(--text-mute);
+}
+.small {
+  font-size: 0.875rem;
+}
+
+/* 小さな印（Android／iOS／準備中） */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tag {
+  display: inline-block;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text-sub);
+  font-size: 0.75rem;
+  line-height: 1.8;
+  white-space: nowrap;
+}
+
+/* リンクの並び */
+.link-list {
+  list-style: none;
+  padding: 0;
+}
+.link-list li + li {
+  margin-top: 8px;
+}
+
+/* 商標などの小さな注記 */
+.notice {
+  margin-top: 48px;
+  color: var(--text-mute);
+  font-size: 0.8rem;
+}
+
+/* 文書（プライバシーポリシー・サポートなど、Markdown の本文） */
+.prose h2 {
+  font-size: 1.25rem;
+  margin: 48px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.prose h3 {
+  font-size: 1.05rem;
+  margin: 32px 0 8px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+.prose li + li {
+  margin-top: 6px;
+}
+.prose .link-list {
+  padding-left: 0;
+}
+.prose details {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+}
+.prose details + details {
+  margin-top: 12px;
+}
+.prose summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+.prose details[open] summary {
+  margin-bottom: 12px;
+}
+.prose details > :last-child {
+  margin-bottom: 0;
+}

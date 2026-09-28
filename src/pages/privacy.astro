@@ -1,0 +1,62 @@
+---
+import Base from '../layouts/Base.astro';
+import { getApps, privacyUrl } from '../lib/apps';
+import { SITE } from '../lib/site';
+
+const apps = await getApps();
+const githubPrivacy = 'https://docs.github.com/ja/site-policy/privacy-policies/github-general-privacy-statement';
+---
+
+<Base title="プライバシーポリシー" description="hitoma works のウェブサイトのプライバシーポリシーです。">
+  <article class="prose">
+    <p class="eyebrow">PRIVACY POLICY</p>
+    <h1>プライバシーポリシー</h1>
+    <p class="meta">制定日：2026年9月28日</p>
+
+    <p>
+      このページは、hitoma works のウェブサイト（hitoma.works）での情報の扱いについて説明します。各アプリでの扱いは、アプリごとのプライバシーポリシーをご覧ください。
+    </p>
+
+    <h2>アクセス解析・Cookie・広告</h2>
+    <p>このサイトは、アクセス解析ツール、Cookie、広告を使っていません。外部のフォントやスクリプトも読み込んでいません。</p>
+
+    <h2>サーバーの記録</h2>
+    <p>
+      このサイトは GitHub Pages で公開しています。GitHub は、サービスの運用と安全のために、アクセスの記録（IP アドレスなど）を扱うことがあります。詳しくは <a
+        href={githubPrivacy}>GitHub のプライバシーステートメント</a
+      >をご覧ください。hitoma works がこの記録を受け取ることはありません。
+    </p>
+
+    <h2>お問い合わせでいただく情報</h2>
+    <p>メールでお問い合わせをいただいた場合、メールアドレスとお問い合わせの内容は、返信のためだけに使い、ほかの目的には使いません。</p>
+
+    <h2>アプリごとのプライバシーポリシー</h2>
+    <ul class="link-list">
+      {
+        apps.map((app) => (
+          <li>
+            <a href={privacyUrl(app.id)}>{app.data.name}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>改定</h2>
+    <p>このポリシーを改定するときは、このページでお知らせします。</p>
+
+    <h2>お問い合わせ先</h2>
+    <p>hitoma works<br /><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+  </article>
+</Base>
+
+<style>
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+  }
+  .meta {
+    color: var(--text-mute);
+    font-size: 0.875rem;
+    margin-bottom: 32px;
+  }
+</style>

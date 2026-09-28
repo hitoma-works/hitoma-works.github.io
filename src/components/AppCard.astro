@@ -1,0 +1,84 @@
+---
+import { appUrl, type App } from '../lib/apps';
+import AppIcon from './AppIcon.astro';
+import Screenshots from './Screenshots.astro';
+import StoreButtons from './StoreButtons.astro';
+
+interface Props {
+  app: App;
+}
+
+const { app } = Astro.props;
+const { name, tagline, description, platforms, storeLinks } = app.data;
+const released = Boolean(storeLinks.googlePlay || storeLinks.appStore);
+---
+
+<article class="card">
+  <div class="head">
+    <AppIcon slug={app.id} name={name} size={64} />
+    <div>
+      <h3 class="name"><a href={appUrl(app.id)}>{name}</a></h3>
+      <p class="tagline">{tagline}</p>
+    </div>
+  </div>
+
+  <Screenshots app={app} placeholders={1} />
+
+  <p class="desc">{description}</p>
+
+  <ul class="tags">
+    {platforms.map((p) => <li class="tag">{p}</li>)}
+    {!released && <li class="tag">ストア公開準備中</li>}
+  </ul>
+
+  <StoreButtons app={app} />
+
+  <p class="more"><a href={appUrl(app.id)}>{name}について詳しく</a></p>
+</article>
+
+<style>
+  .card {
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .name {
+    font-size: 1.3rem;
+  }
+  .name a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .name a:hover {
+    text-decoration: underline;
+  }
+  .tagline {
+    margin: 4px 0 0;
+    color: var(--text-sub);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .desc {
+    margin: 16px 0 12px;
+  }
+  .tags {
+    margin-bottom: 20px;
+  }
+  .tags .tag {
+    background: var(--bg);
+  }
+  .more {
+    margin: 20px 0 0;
+    font-size: 0.875rem;
+  }
+  /* カードの地（#F3F4F6）の上ではリンク色が 4.3:1 と足りないので本文の色で */
+  .more a {
+    color: var(--text);
+  }
+</style>

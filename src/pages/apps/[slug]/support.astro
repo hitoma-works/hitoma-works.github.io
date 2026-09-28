@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { appUrl, getAppDoc, getApps, privacyUrl, type App } from '../../../lib/apps';
+
+export const getStaticPaths = (async () => {
+  const apps = await getApps();
+  return apps.map((app) => ({ params: { slug: app.id }, props: { app } }));
+}) satisfies GetStaticPaths;
+
+const { app } = Astro.props as { app: App };
+const doc = await getAppDoc(app.id, 'support');
+const { Content } = await render(doc);
+---
+
+<Base title={`サポート | ${app.data.name}`} description={doc.data.description}>
+  <article class="prose">
+    <p class="eyebrow">SUPPORT</p>
+    <h1>サポート</h1>
+    <p class="lead">{app.data.name}</p>
+
+    <Content />
+
+    <ul class="link-list back">
+      <li><a href={appUrl(app.id)}>{app.data.name}のページへ</a></li>
+      <li><a href={privacyUrl(app.id)}>プライバシーポリシー</a></li>
+    </ul>
+  </article>
+</Base>
+
+<style>
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+  }
+  .back {
+    margin-top: 48px;
+  }
+</style>
