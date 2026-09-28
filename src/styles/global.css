@@ -13,6 +13,8 @@
   --link: #c8473a; /* リンクの文字（白地に対して 4.7:1） */
   --eyebrow: #c8473a; /* 英字の小見出しの文字（コーラルそのままだと白地で 2.8:1 と薄すぎるので濃い方） */
   --store-bg: #111827; /* ストアの黒いボタン */
+  --scrim: rgba(17, 24, 39, 0.92); /* 画像を拡大したときの背景（--text #111827 を透かしたもの） */
+  --on-scrim: #f9fafb; /* --scrim の上に載る文字・ボタン（10.6:1） */
 
   /* 文字 */
   --font-body: 'Noto Sans JP', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic UI', 'Yu Gothic',

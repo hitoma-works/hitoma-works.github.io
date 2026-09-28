@@ -1,5 +1,6 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { App } from '../lib/apps';
 
 interface Props {
@@ -8,27 +9,189 @@ interface Props {
   placeholders?: number;
 }
 
+/** サムネイルの書き出し幅（画面では 150〜180px なので 2 倍で足りる） */
+const THUMB_WIDTH = 360;
+/** 拡大したときの書き出し幅（元画像より大きくはしない） */
+const FULL_WIDTH = 660;
+
 const { app, placeholders = 3 } = Astro.props;
 const shots = app.data.screenshots;
+
+// Astro の画像メタデータは Proxy で、width などを直に読むと「加工前の画像も使っている」と見なされ、
+// 元の PNG まで dist に残る。寸法を見るときだけ clone（Astro 自身が使う逃げ道）を通す。
+// Image / getImage には Proxy のまま渡す（fsPath が要る）。
+const sizeOf = (src: ImageMetadata) => (src as ImageMetadata & { clone?: ImageMetadata }).clone ?? src;
+
+// 拡大用は別に書き出す。JS が無いときはこの画像そのものへのリンクになる。
+const items = await Promise.all(
+  shots.map(async (s) => ({
+    ...s,
+    full: await getImage({ src: s.src, width: Math.min(FULL_WIDTH, sizeOf(s.src).width) }),
+  })),
+);
+const multiple = items.length > 1;
 ---
 
-<div class="shots">
+<div class="shots-block">
+  <div class="shots">
+    {
+      items.length > 0
+        ? items.map((s) => (
+            <a
+              class="shot-link"
+              href={s.full.src}
+              aria-label={`${s.alt}（画像を拡大します）`}
+            >
+              <Image class="shot" src={s.src} alt={s.alt} width={THUMB_WIDTH} />
+            </a>
+          ))
+        : Array.from({ length: placeholders }, () => (
+            <div class="shot frame">
+              スクリーン
+              <br />
+              ショット
+              <br />
+              （準備中）
+            </div>
+          ))
+    }
+  </div>
+
   {
-    shots.length > 0
-      ? shots.map((s) => <Image class="shot" src={s.src} alt={s.alt} width={360} />)
-      : Array.from({ length: placeholders }, () => (
-          <div class="shot frame">
-            スクリーン
-            <br />
-            ショット
-            <br />
-            （準備中）
-          </div>
-        ))
+    items.length > 0 && (
+      <dialog class="lightbox" role="dialog" aria-label="スクリーンショットの拡大表示">
+        <div class="lb-inner">
+          <button class="lb-btn lb-close" type="button" aria-label="閉じる" autofocus>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+          <button class="lb-btn lb-nav lb-prev" type="button" aria-label="前の画像" hidden={!multiple}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M15 4L7 12l8 8" />
+            </svg>
+          </button>
+          <button class="lb-btn lb-nav lb-next" type="button" aria-label="次の画像" hidden={!multiple}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M9 4l8 8-8 8" />
+            </svg>
+          </button>
+          <figure class="lb-figure">
+            <img class="lb-img" alt="" decoding="async" />
+            <figcaption class="lb-cap">
+              <span class="lb-alt" />
+              {multiple && <span class="lb-count" />}
+            </figcaption>
+          </figure>
+        </div>
+      </dialog>
+    )
   }
 </div>
 
+<script>
+  /** 横に振り切ったと見なす距離（px） */
+  const SWIPE_MIN = 40;
+
+  for (const block of document.querySelectorAll<HTMLElement>('.shots-block')) {
+    const dialog = block.querySelector<HTMLDialogElement>('.lightbox');
+    const links = [...block.querySelectorAll<HTMLAnchorElement>('.shot-link')];
+    // <dialog> が使えない古い環境では、そのまま画像へのリンクとして残す
+    if (!dialog || links.length === 0 || typeof dialog.showModal !== 'function') continue;
+
+    const img = dialog.querySelector<HTMLImageElement>('.lb-img')!;
+    const altText = dialog.querySelector<HTMLElement>('.lb-alt')!;
+    const count = dialog.querySelector<HTMLElement>('.lb-count');
+    const figure = dialog.querySelector<HTMLElement>('.lb-figure')!;
+    let index = 0;
+    let opener: HTMLElement | null = null;
+    let htmlOverflow = '';
+
+    const show = (i: number) => {
+      index = (i + links.length) % links.length;
+      const link = links[index]!;
+      const alt = link.querySelector('img')?.alt ?? '';
+      img.src = link.href;
+      img.alt = alt;
+      altText.textContent = alt;
+      if (count) count.textContent = `${index + 1} / ${links.length}`;
+    };
+
+    const open = (i: number, from: HTMLElement) => {
+      opener = from;
+      show(i);
+      htmlOverflow = document.documentElement.style.overflow;
+      document.documentElement.style.overflow = 'hidden'; // 背景のスクロールを止める
+      dialog.showModal();
+    };
+
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.overflow = htmlOverflow;
+      opener?.focus({ preventScroll: true });
+      opener = null;
+    });
+
+    links.forEach((link, i) =>
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        open(i, link);
+      }),
+    );
+
+    dialog.querySelector('.lb-close')!.addEventListener('click', () => dialog.close());
+    dialog.querySelector('.lb-prev')?.addEventListener('click', () => show(index - 1));
+    dialog.querySelector('.lb-next')?.addEventListener('click', () => show(index + 1));
+
+    // 画像・説明・ボタンの外側（背景）を押したら閉じる
+    dialog.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.lb-img, .lb-cap, .lb-btn')) dialog.close();
+    });
+
+    // Esc で閉じる（<dialog> 自身も閉じるが、環境によって効かないので明示的に）。左右キーで前後へ。
+    dialog.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        dialog.close();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        show(index - 1);
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        show(index + 1);
+      }
+    });
+
+    // 左右にスワイプしても前後へ
+    let startX: number | null = null;
+    let startY = 0;
+    figure.addEventListener(
+      'touchstart',
+      (e) => {
+        if (e.touches.length !== 1) return;
+        startX = e.touches[0]!.clientX;
+        startY = e.touches[0]!.clientY;
+      },
+      { passive: true },
+    );
+    figure.addEventListener(
+      'touchend',
+      (e) => {
+        if (startX === null || links.length < 2) return;
+        const touch = e.changedTouches[0]!;
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        if (Math.abs(dx) > SWIPE_MIN && Math.abs(dx) > Math.abs(dy)) show(index + (dx < 0 ? 1 : -1));
+        startX = null;
+      },
+      { passive: true },
+    );
+  }
+</script>
+
 <style>
+  .shots-block {
+    --shot-radius: 18px;
+  }
   .shots {
     display: flex;
     gap: 12px;
@@ -36,11 +199,21 @@ const shots = app.data.screenshots;
     padding-bottom: 8px;
     scroll-snap-type: x mandatory;
   }
+  .shot-link {
+    display: block;
+    flex: 0 0 auto;
+    border-radius: var(--shot-radius);
+    scroll-snap-align: start;
+    cursor: zoom-in;
+  }
+  .shot-link:focus-visible {
+    border-radius: var(--shot-radius);
+  }
   .shot {
     flex: 0 0 auto;
     width: 150px;
     aspect-ratio: 9 / 19.5;
-    border-radius: 18px;
+    border-radius: var(--shot-radius);
     object-fit: cover;
     scroll-snap-align: start;
   }
@@ -58,6 +231,132 @@ const shots = app.data.screenshots;
   @media (min-width: 600px) {
     .shot {
       width: 180px;
+    }
+  }
+
+  /* 拡大表示 */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    /* ::backdrop が変数を継承しない環境でも暗くなるように、<dialog> 自身にも敷く */
+    background: var(--scrim);
+    color: var(--on-scrim);
+    overflow: hidden;
+  }
+  .lightbox::backdrop {
+    background: var(--scrim);
+  }
+  .lb-inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 64px 12px 16px;
+  }
+  .lb-figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 0;
+    margin: 0;
+  }
+  .lb-img {
+    flex: 0 1 auto;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    min-height: 0;
+    object-fit: contain;
+    border-radius: var(--shot-radius);
+  }
+  .lb-cap {
+    flex: 0 0 auto;
+    max-width: 44ch;
+    color: var(--on-scrim);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+  .lb-count {
+    display: block;
+    opacity: 0.75;
+    font-size: 0.75rem;
+  }
+  .lb-btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--scrim);
+    color: var(--on-scrim);
+    cursor: pointer;
+  }
+  /* display を上書きしているので、画像が 1 枚のときの hidden を効かせ直す */
+  .lb-btn[hidden] {
+    display: none;
+  }
+  .lb-btn svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .lb-close {
+    top: 12px;
+    right: 12px;
+  }
+  .lb-nav {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb-prev {
+    left: 8px;
+  }
+  .lb-next {
+    right: 8px;
+  }
+  @media (min-width: 600px) {
+    .lb-inner {
+      padding: 72px 72px 20px;
+    }
+    .lb-prev {
+      left: 16px;
+    }
+    .lb-next {
+      right: 16px;
+    }
+  }
+  .lightbox[open] {
+    animation: lb-in 0.15s ease-out;
+  }
+  @keyframes lb-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox[open] {
+      animation: none;
     }
   }
 </style>
