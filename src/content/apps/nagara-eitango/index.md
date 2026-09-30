@@ -28,7 +28,7 @@ screenshots:
 requirements: Android 10 以上、iOS 26 以上に対応する予定です。
 notice: TOEIC is a registered trademark of ETS. This product is not endorsed or approved by ETS.
 privacyEstablished: 2026-09-28
-privacyUpdated: 2026-09-28
+privacyUpdated: 2026-10-01
 order: 1
 ---
 
