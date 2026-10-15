@@ -1,12 +1,12 @@
 ---
-name: のこす写真
-tagline: 残す写真を選んで、iPhone をすっきり。写真は端末の外に出しません。
-description: のこす写真は、似た写真・重複・スクリーンショット・大きい動画を見つけて、残すものを選んでまとめて消せる iPhone アプリです。判定はすべて端末の中。サブスクなしの買い切り。
+name: ベスショ
+tagline: ベストショットだけ残して、iPhone をすっきり。写真は端末の外に出しません。
+description: ベスショは、似た写真・重複・スクリーンショット・大きい動画を見つけて、残すものを選んでまとめて消せる iPhone アプリです。判定はすべて端末の中。サブスクなしの買い切り。
 platforms: [iOS]
 # 公開したら URL を入れる（空のあいだは「準備中」のボタン）
 storeLinks: {}
 #  appStore: https://apps.apple.com/jp/app/...
-# 画面の画像。src/assets/apps/nokosu-shashin/ に置いて並べる（空のあいだは枠だけ）
+# 画面の画像。src/assets/apps/besusho/ に置いて並べる（空のあいだは枠だけ）
 screenshots: []
 requirements: iOS 18 以上の iPhone に対応する予定です。
 privacyEstablished: 2026-10-16
