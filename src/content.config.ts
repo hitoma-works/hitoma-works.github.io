@@ -17,6 +17,8 @@ const apps = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      /** 副題（名前の後ろに小さく出す。例：ベストショットだけ残す写真整理）。無ければ出さない */
+      subtitle: z.string().optional(),
       /** 一言（カードと紹介ページの見出しの下） */
       tagline: z.string(),
       /** 説明（カードの本文と、紹介ページの meta description） */

@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { app } = Astro.props;
-const { name, tagline, description, platforms, storeLinks } = app.data;
+const { name, subtitle, tagline, description, platforms, storeLinks } = app.data;
 const released = Boolean(storeLinks.googlePlay || storeLinks.appStore);
 ---
 
@@ -17,7 +17,7 @@ const released = Boolean(storeLinks.googlePlay || storeLinks.appStore);
   <div class="head">
     <AppIcon slug={app.id} name={name} size={64} />
     <div>
-      <h3 class="name"><a href={appUrl(app.id)}>{name}</a></h3>
+      <h3 class="name"><a href={appUrl(app.id)}>{name}</a>{subtitle && <span class="subtitle">{subtitle}</span>}</h3>
       <p class="tagline">{tagline}</p>
     </div>
   </div>
@@ -57,6 +57,15 @@ const released = Boolean(storeLinks.googlePlay || storeLinks.appStore);
   }
   .name a:hover {
     text-decoration: underline;
+  }
+  .name .subtitle {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--font-body, inherit);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--text-sub);
   }
   .tagline {
     margin: 4px 0 0;

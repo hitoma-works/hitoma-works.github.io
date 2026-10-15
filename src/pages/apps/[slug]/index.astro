@@ -13,14 +13,14 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { app } = Astro.props as { app: App };
-const { name, tagline, description, requirements, notice } = app.data;
+const { name, subtitle, tagline, description, requirements, notice } = app.data;
 const { Content } = await render(app);
 ---
 
-<Base title={name} description={description}>
+<Base title={subtitle ? `${name} ― ${subtitle}` : name} description={description}>
   <section class="hero">
     <AppIcon slug={app.id} name={name} size={88} />
-    <h1>{name}</h1>
+    <h1>{name}{subtitle && <span class="subtitle">{subtitle}</span>}</h1>
     <p class="lead">{tagline}</p>
   </section>
 
@@ -61,6 +61,15 @@ const { Content } = await render(app);
   .hero h1 {
     font-size: clamp(1.75rem, 7vw, 2.25rem);
     margin: 20px 0 8px;
+  }
+  .hero h1 .subtitle {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--font-body, inherit);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: var(--text-sub);
   }
   .req {
     margin-top: 12px;

@@ -62,7 +62,7 @@ scripts/fonts.mjs                     fonts.css を作る
 2. slug を決める（英小文字とハイフン。例：`nagara-eitango`）。URL になり、公開後は変えない。
 3. `src/content/apps/nagara-eitango/` のフォルダを丸ごと `src/content/apps/<slug>/` に写す。
 4. `index.md` の frontmatter を書き換える：
-   - `name`（アプリ名）、`tagline`（一言）、`description`（説明。カードとページの meta description）
+   - `name`（アプリ名）、`subtitle`（副題。名前の後ろに小さく出て、ページの title にも入る。無ければ行ごと消す）、`tagline`（一言）、`description`（説明。カードとページの meta description）
    - `platforms`（`[Android, iOS]` のどちらか・両方）
    - `storeLinks`（公開前は `{}` のまま＝「準備中」のボタン。公開したら `googlePlay:`／`appStore:` に URL）
    - `screenshots`（公開前は `[]`＝枠だけ。画像は `src/assets/apps/<slug>/` に置き、`- src: ../../../assets/apps/<slug>/1.png` と `alt:` を並べる）
