@@ -22,7 +22,7 @@ screenshots:
   - src: ../../../assets/apps/nagara-eitango/6.png
     alt: プリセット編集。読み上げる要素と順番、回数、間を決める
   - src: ../../../assets/apps/nagara-eitango/7.png
-    alt: 聞いて答える。語を聞いて、思い出せたかを ○✕ で答える
+    alt: 4択で答える。答えると大きな ○✕ が出て、そのままカードを見直せる
   - src: ../../../assets/apps/nagara-eitango/8.png
     alt: 統計。連続日数、学習した語、定着度
 requirements: Android 10 以上、iOS 26 以上に対応する予定です。
