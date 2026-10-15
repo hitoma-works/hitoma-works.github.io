@@ -62,6 +62,8 @@ for (const file of htmlFiles) {
   // 3. 外部の読み込み
   const loadTags = /<(link|script|img|source|iframe|video|audio|embed|object)\b[^>]*>/gi;
   for (const [tag] of html.matchAll(loadTags)) {
+    // rel="canonical" は読み込みではなく「正しい URL」の宣言（自分のドメインの絶対 URL）。
+    if (/\srel="canonical"/i.test(tag) && /\shref="https:\/\/hitoma\.works\//i.test(tag)) continue;
     const attrs = [...tag.matchAll(/\s(href|src|srcset|data)="([^"]*)"/gi)];
     for (const [, name, value] of attrs) {
       if (/(^|[\s,])(https?:)?\/\//i.test(value)) {

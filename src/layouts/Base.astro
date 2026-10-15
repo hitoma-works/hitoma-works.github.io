@@ -12,6 +12,9 @@ interface Props {
 
 const { title, description, noindex = false } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
+// 正しい URL（https・www なし・末尾 /）を Google に伝える。http や www、末尾 / なしは
+// GitHub Pages と DNS が転送するので、Search Console の「リダイレクトあり」はそちらの数。
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -22,7 +25,7 @@ const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
     <meta name="color-scheme" content="light" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
