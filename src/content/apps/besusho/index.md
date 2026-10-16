@@ -7,8 +7,20 @@ platforms: [iOS]
 # 公開したら URL を入れる（空のあいだは「準備中」のボタン）
 storeLinks: {}
 #  appStore: https://apps.apple.com/jp/app/...
-# 画面の画像。src/assets/apps/besusho/ に置いて並べる（空のあいだは枠だけ）
-screenshots: []
+# 画面の画像（photo-cleanup の docs/screenshots/site/ja/ を写したもの）
+screenshots:
+  - src: ../../../assets/apps/besusho/1.png
+    alt: ホーム。空けられる容量の見込みと、似た写真・重複・スクショ・保存した画像・大きい動画・ぶれ／暗い写真の件数
+  - src: ../../../assets/apps/besusho/2.png
+    alt: 似た写真。撮った時刻の近い写真をまとめ、ベスト以外を消す候補に
+  - src: ../../../assets/apps/besusho/3.png
+    alt: グループの中。ベストに選んだ理由を 1 行で
+  - src: ../../../assets/apps/besusho/4.png
+    alt: 1 枚ずつ仕分け。左へ消す候補、右へ残す
+  - src: ../../../assets/apps/besusho/5.png
+    alt: 消す前の確認。「最近削除した項目」に 30 日残ることを案内
+  - src: ../../../assets/apps/besusho/6.png
+    alt: 購入。一度の購入で無制限に。自動で請求されることはありません
 requirements: iOS 18 以上の iPhone に対応する予定です。
 privacyEstablished: 2026-10-16
 privacyUpdated: 2026-10-16
