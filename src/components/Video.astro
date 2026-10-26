@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { App } from '../lib/apps';
+
+interface Props {
+  app: App;
+}
+
+// 紹介動画。YouTube を埋め込むと外部の読み込みと Cookie が入るので、
+// このサイトの約束（privacy.astro）どおり、手元の画像から YouTube の動画ページへリンクするだけにする。
+const { app } = Astro.props;
+const video = app.data.video!;
+---
+
+<a class="video" href={video.url} target="_blank" rel="noopener">
+  <Image src={video.thumb} alt={video.alt} width={960} />
+  <span class="play" aria-hidden="true">
+    <svg viewBox="0 0 68 48" width="68" height="48"><path d="M66.5 7.7c-.8-2.9-3-5.2-5.9-6C55.3.3 34 .3 34 .3S12.7.3 7.4 1.7c-2.9.8-5.1 3.1-5.9 6C.1 13 .1 24 .1 24s0 11 1.4 16.3c.8 2.9 3 5.2 5.9 6C12.7 47.7 34 47.7 34 47.7s21.3 0 26.6-1.4c2.9-.8 5.1-3.1 5.9-6C67.9 35 67.9 24 67.9 24s0-11-1.4-16.3z" fill="#ff6b5b"/><path d="M45 24 27 14v20z" fill="#fff"/></svg>
+  </span>
+  <span class="cap">YouTube で見る{video.length && `（${video.length}）`}</span>
+</a>
+
+<style>
+  .video {
+    position: relative;
+    display: block;
+    max-width: 720px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(17, 24, 39, 0.12);
+    text-decoration: none;
+  }
+  .video :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+    transition: transform 0.15s;
+  }
+  .video:hover .play {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  .cap {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(17, 24, 39, 0.75);
+    color: #fff;
+    font-size: 0.85rem;
+  }
+</style>

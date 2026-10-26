@@ -5,6 +5,7 @@ import Base from '../../../layouts/Base.astro';
 import AppIcon from '../../../components/AppIcon.astro';
 import Screenshots from '../../../components/Screenshots.astro';
 import StoreButtons from '../../../components/StoreButtons.astro';
+import Video from '../../../components/Video.astro';
 import { getApps, privacyUrl, supportUrl, type App } from '../../../lib/apps';
 
 export const getStaticPaths = (async () => {
@@ -31,6 +32,16 @@ const { Content } = await render(app);
       <Content />
     </div>
   </section>
+
+  {
+    app.data.video && (
+      <section class="section" aria-labelledby="video">
+        <p class="eyebrow">VIDEO</p>
+        <h2 class="section-title" id="video">紹介動画</h2>
+        <Video app={app} />
+      </section>
+    )
+  }
 
   <section class="section" aria-labelledby="screens">
     <p class="eyebrow">SCREENS</p>
