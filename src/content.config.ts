@@ -33,8 +33,8 @@ const apps = defineCollection({
         .default({}),
       /** 画面の画像（src は md からの相対パス）。空なら枠だけ出す */
       screenshots: z.array(z.object({ src: image(), alt: z.string() })).default([]),
-      /** 紹介動画。埋め込まず、1 場面の画像（thumb）から YouTube へリンクする（このサイトは外部の読み込みも Cookie も使わないため） */
-      video: z.object({ url: z.url(), thumb: image(), alt: z.string(), length: z.string().optional() }).optional(),
+      /** 紹介動画（YouTube の URL）。プライバシー強化モードで埋め込む */
+      video: z.object({ url: z.url(), alt: z.string() }).optional(),
       /** 対応 OS などの一文（ダウンロードの下に出す） */
       requirements: z.string().optional(),
       /** 商標の表記など（ページの下に小さく出す） */

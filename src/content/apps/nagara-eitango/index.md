@@ -7,12 +7,10 @@ platforms: [Android, iOS]
 storeLinks:
   googlePlay: https://play.google.com/store/apps/details?id=works.hitoma.nagaraeitango
 #  appStore: https://apps.apple.com/jp/app/...（iOS を公開したら入れる）
-# 紹介動画（YouTube。埋め込まず、画像からリンク）
+# 紹介動画（YouTube。プライバシー強化モードで埋め込む）
 video:
   url: https://www.youtube.com/watch?v=TzM1CeeM-Q4
-  thumb: ../../../assets/apps/nagara-eitango/video.png
-  alt: 紹介動画。durable を、意味・例文・英語の解説・類義語・対義語まで読み上げる場面
-  length: 約 1 分 46 秒
+  alt: ながら英単語の紹介動画
 # 画面の画像。src/assets/apps/nagara-eitango/ に置いて並べる（空のあいだは枠だけ）
 screenshots:
   - src: ../../../assets/apps/nagara-eitango/1.png

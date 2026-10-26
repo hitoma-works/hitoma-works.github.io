@@ -64,6 +64,8 @@ for (const file of htmlFiles) {
   for (const [tag] of html.matchAll(loadTags)) {
     // rel="canonical" は読み込みではなく「正しい URL」の宣言（自分のドメインの絶対 URL）。
     if (/\srel="canonical"/i.test(tag) && /\shref="https:\/\/hitoma\.works\//i.test(tag)) continue;
+    // 紹介動画の YouTube 埋め込み（プライバシー強化モード）だけは許す。privacy.astro にも書いてある（2026-10-26 Ko）
+    if (/^<iframe\s/i.test(tag) && /\ssrc="https:\/\/www\.youtube-nocookie\.com\/embed\/[\w-]+(\?[^"]*)?"/i.test(tag)) continue;
     const attrs = [...tag.matchAll(/\s(href|src|srcset|data)="([^"]*)"/gi)];
     for (const [, name, value] of attrs) {
       if (/(^|[\s,])(https?:)?\/\//i.test(value)) {
