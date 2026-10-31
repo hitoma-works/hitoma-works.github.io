@@ -8,9 +8,12 @@ interface Props {
   title?: string;
   description: string;
   noindex?: boolean;
+  /** ページの言語。'en' はアプリの英語版のプライバシーポリシー・サポートだけ（ヘッダーとフッターも英語に） */
+  lang?: 'ja' | 'en';
 }
 
-const { title, description, noindex = false } = Astro.props;
+const { title, description, noindex = false, lang = 'ja' } = Astro.props;
+const en = lang === 'en';
 const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
 // 正しい URL（https・www なし・末尾 /）を Google に伝える。http や www、末尾 / なしは
 // GitHub Pages と DNS が転送するので、Search Console の「リダイレクトあり」はそちらの数。
@@ -18,7 +21,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,10 +35,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <header class="site-header">
       <div class="wrap header-inner">
         <a class="brand" href="/">{SITE.name}</a>
-        <nav aria-label="メニュー">
+        <nav aria-label={en ? 'Menu' : 'メニュー'}>
           <ul class="menu">
-            <li><a href="/#apps">アプリ</a></li>
-            <li><a href="/#contact">お問い合わせ</a></li>
+            <li><a href="/#apps">{en ? 'Apps' : 'アプリ'}</a></li>
+            <li><a href="/#contact">{en ? 'Contact' : 'お問い合わせ'}</a></li>
           </ul>
         </nav>
       </div>
@@ -47,7 +50,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        <a href="/privacy/">プライバシーポリシー</a>
+        {
+          en ? (
+            <a href="/privacy/" hreflang="ja">Privacy Policy (site, Japanese)</a>
+          ) : (
+            <a href="/privacy/">プライバシーポリシー</a>
+          )
+        }
         <span>{SITE.copyright}</span>
       </div>
     </footer>

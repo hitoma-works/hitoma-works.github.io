@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import { appUrl, formatDate, getAppDoc, getApps, supportUrl, type App } from '../../../lib/apps';
+import { appUrl, formatDate, getAppDoc, getApps, hasEnglishDocs, privacyEnUrl, supportUrl, type App } from '../../../lib/apps';
 
 export const getStaticPaths = (async () => {
   const apps = await getApps();
@@ -12,6 +12,7 @@ export const getStaticPaths = (async () => {
 const { app } = Astro.props as { app: App };
 const doc = await getAppDoc(app.id, 'privacy');
 const { Content } = await render(doc);
+const hasEn = await hasEnglishDocs(app.id);
 ---
 
 <Base title={`プライバシーポリシー | ${app.data.name}`} description={doc.data.description}>
@@ -19,6 +20,13 @@ const { Content } = await render(doc);
     <p class="eyebrow">PRIVACY POLICY</p>
     <h1>プライバシーポリシー</h1>
     <p class="lead">{app.data.name}</p>
+    {
+      hasEn && (
+        <p class="lang-switch">
+          <a href={privacyEnUrl(app.id)} hreflang="en" lang="en">English</a>
+        </p>
+      )
+    }
     <p class="meta">
       制定日：{formatDate(app.data.privacyEstablished)}<br />
       最終改定日：{formatDate(app.data.privacyUpdated)}

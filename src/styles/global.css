@@ -162,6 +162,12 @@ a:hover {
   margin-top: 8px;
 }
 
+/* 言語の切り替え（アプリのプライバシーポリシー・サポートの日本語版⇔英語版。lead の下に小さく） */
+.lang-switch {
+  margin: 0 0 8px;
+  font-size: 0.875rem;
+}
+
 /* 商標などの小さな注記 */
 .notice {
   margin-top: 48px;

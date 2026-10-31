@@ -1,0 +1,45 @@
+---
+// 英語版のサポート（App Store の英語の掲載用）。support.en.md があるアプリだけ作る。
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../../../layouts/Base.astro';
+import { appUrl, getAppDocEn, getAppsWithEnglishDocs, privacyEnUrl, supportUrl, type App } from '../../../../lib/apps';
+
+export const getStaticPaths = (async () => {
+  const apps = await getAppsWithEnglishDocs();
+  return apps.map((app) => ({ params: { slug: app.id }, props: { app } }));
+}) satisfies GetStaticPaths;
+
+const { app } = Astro.props as { app: App };
+const doc = (await getAppDocEn(app.id, 'support'))!;
+const { Content } = await render(doc);
+const nameEn = app.data.nameEn!;
+---
+
+<Base title={`Support | ${nameEn}`} description={doc.data.description} lang="en">
+  <article class="prose">
+    <p class="eyebrow">SUPPORT</p>
+    <h1>Support</h1>
+    <p class="lead">{nameEn}</p>
+    <p class="lang-switch">
+      <a href={supportUrl(app.id)} hreflang="ja" lang="ja">日本語</a>
+    </p>
+
+    <Content />
+
+    <ul class="link-list back">
+      <li><a href={privacyEnUrl(app.id)}>Privacy Policy</a></li>
+      <li><a href={appUrl(app.id)} hreflang="ja">{nameEn} page (Japanese)</a></li>
+    </ul>
+  </article>
+</Base>
+
+<style>
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+  }
+  .back {
+    margin-top: 48px;
+  }
+</style>

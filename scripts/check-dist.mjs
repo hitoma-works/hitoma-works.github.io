@@ -35,6 +35,10 @@ const expected = [
   '.nojekyll',
   'robots.txt',
   ...slugs.flatMap((s) => [`apps/${s}/index.html`, `apps/${s}/privacy/index.html`, `apps/${s}/support/index.html`]),
+  // 英語版（privacy.en.md があるアプリだけ。App Store の英語の掲載用）
+  ...slugs
+    .filter((s) => existsSync(join(root, 'src/content/apps', s, 'privacy.en.md')))
+    .flatMap((s) => [`apps/${s}/en/privacy/index.html`, `apps/${s}/en/support/index.html`]),
 ];
 for (const e of expected) if (!existsSync(join(dist, e))) problems.push(`ページが無い: ${e}`);
 

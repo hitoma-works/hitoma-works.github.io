@@ -1,0 +1,65 @@
+---
+// 英語版のプライバシーポリシー（App Store の英語の掲載用）。privacy.en.md があるアプリだけ作る。
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../../../layouts/Base.astro';
+import {
+  appUrl,
+  formatDateEn,
+  getAppDocEn,
+  getAppsWithEnglishDocs,
+  privacyUrl,
+  supportEnUrl,
+  type App,
+} from '../../../../lib/apps';
+
+export const getStaticPaths = (async () => {
+  const apps = await getAppsWithEnglishDocs();
+  return apps.map((app) => ({ params: { slug: app.id }, props: { app } }));
+}) satisfies GetStaticPaths;
+
+const { app } = Astro.props as { app: App };
+const doc = (await getAppDocEn(app.id, 'privacy'))!;
+const { Content } = await render(doc);
+const nameEn = app.data.nameEn!;
+---
+
+<Base title={`Privacy Policy | ${nameEn}`} description={doc.data.description} lang="en">
+  <article class="prose">
+    <p class="eyebrow">PRIVACY POLICY</p>
+    <h1>Privacy Policy</h1>
+    <p class="lead">{nameEn}</p>
+    <p class="lang-switch">
+      <a href={privacyUrl(app.id)} hreflang="ja" lang="ja">日本語</a>
+    </p>
+    <p class="meta">
+      Effective: {formatDateEn(app.data.privacyEstablished)}<br />
+      Last updated: {formatDateEn(app.data.privacyUpdated)}
+    </p>
+
+    <Content />
+
+    <ul class="link-list back">
+      <li><a href={supportEnUrl(app.id)}>Support</a></li>
+      <li><a href={appUrl(app.id)} hreflang="ja">{nameEn} page (Japanese)</a></li>
+    </ul>
+  </article>
+</Base>
+
+<style>
+  h1 {
+    font-size: 1.75rem;
+    margin-bottom: 8px;
+  }
+  .lead {
+    margin-bottom: 8px;
+  }
+  .meta {
+    color: var(--text-mute);
+    font-size: 0.875rem;
+    margin-bottom: 32px;
+  }
+  .back {
+    margin-top: 48px;
+  }
+</style>

@@ -6,6 +6,7 @@ import { z } from 'astro/zod';
 //   index.md    紹介（frontmatter ＋ 本文は特長の箇条書き）
 //   privacy.md  プライバシーポリシーの本文
 //   support.md  サポート（よくある質問・問い合わせ）の本文
+//   privacy.en.md / support.en.md  英語版（任意。App Store の英語の掲載用。あるアプリだけ /apps/<slug>/en/… を作る）
 // <slug> がそのまま URL になる（/apps/<slug>/）。
 
 const apps = defineCollection({
@@ -17,6 +18,8 @@ const apps = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      /** 英語のアプリ名（英語版のページの見出し。英語版の md があるアプリだけ要る） */
+      nameEn: z.string().optional(),
       /** 副題（名前の後ろに小さく出す。例：ベストショットだけ残す写真整理）。無ければ出さない */
       subtitle: z.string().optional(),
       /** 一言（カードと紹介ページの見出しの下） */
@@ -49,7 +52,9 @@ const apps = defineCollection({
 const appDocs = defineCollection({
   loader: glob({
     base: './src/content/apps',
-    pattern: '*/{privacy,support}.md',
+    pattern: '*/{privacy,support,privacy.en,support.en}.md',
+    // id は <slug>/privacy、<slug>/privacy.en の形（拡張子 .md だけを外す）
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
   }),
   schema: z.object({
     /** meta description */

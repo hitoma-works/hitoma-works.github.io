@@ -29,7 +29,7 @@ npm run fonts     # フォントの太さを変えた・@fontsource を上げた
 - フォントは npm の `@fontsource/zen-kaku-gothic-new`（見出し 900）と `@fontsource/noto-sans-jp`（本文 400・700）を同梱。日本語（分割）＋ラテンの面だけを `src/styles/fonts.css`（自動生成、手で直さない）に入れている。
 - Tailwind・React などの UI ライブラリは入れない。スタイルは `src/styles/global.css` の CSS 変数と共通の型、ページ・部品ごとの scoped `<style>`。色は変数を使い、直書きしない。
 - 見た目（2026-09-28 Ko：A 案＋コーラル）：白地 `#FFFFFF`、文字 `#111827`、薄い文字 `#4B5563`／`#6B7280`、カード `#F3F4F6`、線 `#E5E7EB`、アクセントはコーラル `#FF6B5B`。コーラルの上の文字は `#3B1A14`、リンクは `#C8473A`。モバイル優先・1 カラム・最大幅 720px。ダークモードは対応しない。幅 375px で横にはみ出さないこと。
-- **文言は日本語、です・ます**。
+- **文言は日本語、です・ます**。例外として、アプリの英語版のプライバシーポリシー・サポート（`privacy.en.md`／`support.en.md`）は置ける（App Store の英語の掲載用。2026-10-31 Ko）。置いたアプリだけ `/apps/<slug>/en/privacy/`・`/apps/<slug>/en/support/` ができ、日本語版との間に「English」「日本語」のリンクが出る。`index.md` に `nameEn`（英語のアプリ名）が要る。日本語版の URL は変えない。
 - URL は末尾スラッシュのディレクトリ形式（`/apps/nagara-eitango/privacy/`）。内部リンクは `/` から始まる絶対パスで、末尾に `/` を付ける。**公開後はストアに URL が登録されるので、slug とパスは変えない**。
 - `public/CNAME`（`hitoma.works`）と `public/.nojekyll` は消さない。
 
@@ -39,15 +39,19 @@ src/content.config.ts                 コレクションの定義（apps と app
 src/content/apps/<slug>/index.md      アプリの紹介（frontmatter ＋ 本文は特長の箇条書き）
 src/content/apps/<slug>/privacy.md    アプリのプライバシーポリシーの本文（ストアに登録する URL）
 src/content/apps/<slug>/support.md    アプリのサポートの本文（ストアに登録する URL）
+src/content/apps/<slug>/privacy.en.md 英語版のプライバシーポリシー（任意。support.en.md と両方そろえる）
+src/content/apps/<slug>/support.en.md 英語版のサポート（任意）
 src/assets/apps/<slug>.png            アプリのアイコン（置けば使われる。無ければ名前の 1 文字目の文字アイコン）
 src/assets/apps/<slug>/*.png          スクリーンショット（index.md の screenshots に並べる）
 src/pages/index.astro                 ホーム（ヒーロー・アプリ一覧・お問い合わせ）
 src/pages/apps/[slug]/index.astro     /apps/<slug>/
 src/pages/apps/[slug]/privacy.astro   /apps/<slug>/privacy/
 src/pages/apps/[slug]/support.astro   /apps/<slug>/support/
+src/pages/apps/[slug]/en/privacy.astro /apps/<slug>/en/privacy/（英語版。privacy.en.md があるアプリだけ）
+src/pages/apps/[slug]/en/support.astro /apps/<slug>/en/support/（英語版。support.en.md があるアプリだけ）
 src/pages/privacy.astro               /privacy/（サイト全体のポリシー。アプリの一覧は自動）
 src/pages/404.astro                   404.html
-src/layouts/Base.astro                共通の <head>・ヘッダー（屋号／アプリ／お問い合わせ）・フッター
+src/layouts/Base.astro                共通の <head>・ヘッダー（屋号／アプリ／お問い合わせ）・フッター。lang="en" で英語の表記
 src/components/                       AppCard・AppIcon・StoreButtons・Screenshots
 src/lib/apps.ts, src/lib/site.ts      コレクションの読み出し・URL・日付の書式／屋号・連絡先
 src/styles/global.css                 色・文字・共通の型
