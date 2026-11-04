@@ -6,7 +6,7 @@ platforms: [Android, iOS]
 # 公開したら URL を入れる（空のあいだは「準備中」のボタン）
 storeLinks:
   googlePlay: https://play.google.com/store/apps/details?id=works.hitoma.nagaraeitango
-#  appStore: https://apps.apple.com/jp/app/...（iOS を公開したら入れる）
+  appStore: https://apps.apple.com/jp/app/id6824960441
 # 紹介動画（YouTube。プライバシー強化モードで埋め込む）
 video:
   url: https://www.youtube.com/watch?v=TzM1CeeM-Q4
@@ -29,7 +29,7 @@ screenshots:
     alt: 4択で答える。答えると大きな ○✕ が出て、そのままカードを見直せる
   - src: ../../../assets/apps/nagara-eitango/8.png
     alt: 統計。連続日数、学習した語、定着度
-requirements: Android 10 以上に対応しています。iOS 版（iOS 26 以上）は準備中です。
+requirements: Android 10 以上、iOS 26 以上の iPhone に対応しています。
 notice: TOEIC is a registered trademark of ETS. This product is not endorsed or approved by ETS.
 privacyEstablished: 2026-09-28
 privacyUpdated: 2026-10-01
