@@ -25,6 +25,12 @@ const { Content } = await render(app);
     <p class="lead">{tagline}</p>
   </section>
 
+  <section class="section" aria-labelledby="screens">
+    <p class="eyebrow">SCREENS</p>
+    <h2 class="section-title" id="screens">画面</h2>
+    <Screenshots app={app} />
+  </section>
+
   <section class="section" aria-labelledby="features">
     <p class="eyebrow">FEATURES</p>
     <h2 class="section-title" id="features">特長</h2>
@@ -42,12 +48,6 @@ const { Content } = await render(app);
       </section>
     )
   }
-
-  <section class="section" aria-labelledby="screens">
-    <p class="eyebrow">SCREENS</p>
-    <h2 class="section-title" id="screens">画面</h2>
-    <Screenshots app={app} />
-  </section>
 
   <section class="section" aria-labelledby="download">
     <p class="eyebrow">DOWNLOAD</p>
@@ -69,6 +69,9 @@ const { Content } = await render(app);
 </Base>
 
 <style>
+  .hero + .section {
+    margin-top: 16px;
+  }
   .hero h1 {
     font-size: clamp(1.75rem, 7vw, 2.25rem);
     margin: 20px 0 8px;
