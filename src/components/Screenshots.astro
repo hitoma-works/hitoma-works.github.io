@@ -7,6 +7,8 @@ interface Props {
   app: App;
   /** 画像が無いときの枠の数 */
   placeholders?: number;
+  /** ページを開いてすぐ見える枚数（すぐ読み込む。残りはスクロールしてから） */
+  eagerCount?: number;
 }
 
 /** サムネイルの書き出し幅（画面では 150〜180px なので 2 倍で足りる） */
@@ -14,7 +16,7 @@ const THUMB_WIDTH = 360;
 /** 拡大したときの書き出し幅（元画像より大きくはしない） */
 const FULL_WIDTH = 660;
 
-const { app, placeholders = 3 } = Astro.props;
+const { app, placeholders = 3, eagerCount = 0 } = Astro.props;
 const shots = app.data.screenshots;
 
 // Astro の画像メタデータは Proxy で、width などを直に読むと「加工前の画像も使っている」と見なされ、
@@ -36,13 +38,19 @@ const multiple = items.length > 1;
   <div class="shots">
     {
       items.length > 0
-        ? items.map((s) => (
+        ? items.map((s, i) => (
             <a
               class="shot-link"
               href={s.full.src}
               aria-label={`${s.alt}（画像を拡大します）`}
             >
-              <Image class="shot" src={s.src} alt={s.alt} width={THUMB_WIDTH} />
+              <Image
+                class="shot"
+                src={s.src}
+                alt={s.alt}
+                width={THUMB_WIDTH}
+                loading={i < eagerCount ? 'eager' : 'lazy'}
+              />
             </a>
           ))
         : Array.from({ length: placeholders }, () => (
