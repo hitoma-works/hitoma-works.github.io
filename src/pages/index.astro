@@ -37,6 +37,9 @@ const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is stri
   .hero {
     padding: 8px 0;
   }
+  .hero + .section {
+    margin-top: 16px;
+  }
   .hero h1 {
     font-size: clamp(1.75rem, 7.4vw, 2.5rem);
     line-height: 1.35;
