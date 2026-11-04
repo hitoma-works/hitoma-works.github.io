@@ -20,7 +20,7 @@ const { Content } = await render(app);
 
 <Base title={subtitle ? `${name} ― ${subtitle}` : name} description={description}>
   <section class="hero">
-    <AppIcon slug={app.id} name={name} size={88} />
+    <AppIcon slug={app.id} name={name} size={88} eager />
     <h1>{name}{subtitle && <span class="subtitle">{subtitle}</span>}</h1>
     <p class="lead">{tagline}</p>
     {/* まだ出していないアプリは「準備中」を一番上に並べない（下のダウンロードの欄だけ） */}

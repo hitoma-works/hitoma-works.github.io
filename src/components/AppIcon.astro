@@ -6,9 +6,11 @@ interface Props {
   slug: string;
   name: string;
   size?: number;
+  /** ページの一番上に出すときはすぐ読み込む */
+  eager?: boolean;
 }
 
-const { slug, name, size = 64 } = Astro.props;
+const { slug, name, size = 64, eager = false } = Astro.props;
 const icon = getAppIcon(slug);
 // 画像が無いときは名前の 1 文字目（「な」）を丸角四角に
 const letter = Array.from(name)[0] ?? '';
@@ -16,7 +18,16 @@ const letter = Array.from(name)[0] ?? '';
 
 {
   icon ? (
-    <Image class="icon" src={icon} alt="" width={size} height={size} densities={[1, 2, 3]} style={`--size:${size}px`} />
+    <Image
+      class="icon"
+      src={icon}
+      alt=""
+      width={size}
+      height={size}
+      densities={[1, 2, 3]}
+      loading={eager ? 'eager' : 'lazy'}
+      style={`--size:${size}px`}
+    />
   ) : (
     <span class="icon letter" aria-hidden="true" style={`--size:${size}px`}>
       {letter}
