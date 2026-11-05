@@ -23,6 +23,14 @@ screenshots:
     alt: 単語一覧。右端の帯でセクションへ飛べる
   - src: ../../../assets/apps/nagara-eitango/5.png
     alt: カード詳細。意味・例文・解説・関連表現
+  - src: ../../../assets/apps/nagara-eitango/9.png
+    alt: ロック画面のライブアクティビティ。聞きながら、そのまま ○✕ で記録（iPhone）
+  - src: ../../../assets/apps/nagara-eitango/10.png
+    alt: ホーム画面のウィジェット。単語カードを 1 語ずつ、○✕ で記録（iPhone）
+  - src: ../../../assets/apps/nagara-eitango/11.png
+    alt: 流し見の小窓。ほかのアプリの上で、音を出さずに語と例文を眺める（iPhone）
+  - src: ../../../assets/apps/nagara-eitango/12.png
+    alt: ダイナミックアイランド。ほかのアプリを使いながら ○✕ で記録（iPhone）
   - src: ../../../assets/apps/nagara-eitango/6.png
     alt: プリセット編集。読み上げる要素と順番、回数、間を決める
   - src: ../../../assets/apps/nagara-eitango/7.png
