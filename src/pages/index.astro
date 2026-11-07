@@ -30,6 +30,8 @@ const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is stri
     <h2 class="section-title" id="contact">お問い合わせ</h2>
     <p>アプリやこのサイトについてのお問い合わせは、メールでお送りください。</p>
     <p class="mail"><a class="mail-link" href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+    <p class="x-note">アプリの新着やアップデートは X でもお知らせしています。</p>
+    <p class="mail"><a class="mail-link" href={SITE.x.url} rel="me noopener">X　@{SITE.x.handle}</a></p>
   </section>
 </Base>
 
@@ -73,6 +75,9 @@ const notices = [...new Set(apps.map((a) => a.data.notice).filter((n): n is stri
   }
   .contact .mail {
     margin: 16px 0 0;
+  }
+  .contact .x-note {
+    margin: 28px 0 0;
   }
   .mail-link {
     display: inline-block;

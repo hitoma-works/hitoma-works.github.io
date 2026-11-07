@@ -50,13 +50,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
     <footer class="site-footer">
       <div class="wrap footer-inner">
-        {
-          en ? (
-            <a href="/privacy/" hreflang="ja">Privacy Policy (site, Japanese)</a>
-          ) : (
-            <a href="/privacy/">プライバシーポリシー</a>
-          )
-        }
+        <span class="footer-links">
+          {
+            en ? (
+              <a href="/privacy/" hreflang="ja">Privacy Policy (site, Japanese)</a>
+            ) : (
+              <a href="/privacy/">プライバシーポリシー</a>
+            )
+          }
+          <a href={SITE.x.url} rel="me noopener">X（@{SITE.x.handle}）</a>
+        </span>
         <span>{SITE.copyright}</span>
       </div>
     </footer>
@@ -129,6 +132,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   }
   .site-footer a {
     color: var(--text-sub);
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
   }
 
   @media (min-width: 600px) {
