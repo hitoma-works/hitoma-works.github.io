@@ -9,7 +9,7 @@ storeLinks:
   appStore: https://apps.apple.com/jp/app/id6824960441
 # 紹介動画（YouTube。プライバシー強化モードで埋め込む）
 video:
-  url: https://www.youtube.com/watch?v=TzM1CeeM-Q4
+  url: https://www.youtube.com/watch?v=-dh5YIG62EM
   alt: ながら英単語の紹介動画
 # 画面の画像。src/assets/apps/nagara-eitango/ に置いて並べる（空のあいだは枠だけ）
 screenshots:
