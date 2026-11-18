@@ -19,6 +19,15 @@ screenshots:
     alt: 聞き方。日本語から・英語からなど 5 つから選べて、自分でも作れる
   - src: ../../../assets/apps/nagara-eikaiwa/5.png
     alt: 結果。言えなかった例文だけを、もう一度 ○✕ や聞き流しで
+  # 7〜10 は iPhone だけの 4 枚（nagara-eikaiwa の docs/store_screenshots/out/ios-6.9/8〜11 を半分に縮めたもの）
+  - src: ../../../assets/apps/nagara-eikaiwa/7.png
+    alt: ロック画面のライブアクティビティ。聞きながら、そのまま ○✕ で記録（iPhone）
+  - src: ../../../assets/apps/nagara-eikaiwa/8.png
+    alt: ホーム画面のウィジェット。例文カードを 1 文ずつ、○✕ で記録（iPhone）
+  - src: ../../../assets/apps/nagara-eikaiwa/9.png
+    alt: ながら見の小窓。ほかのアプリの上で、音を出さずに英文と訳を眺める（iPhone）
+  - src: ../../../assets/apps/nagara-eikaiwa/10.png
+    alt: ダイナミックアイランド。ほかのアプリを使いながら ○✕ で記録（iPhone）
   - src: ../../../assets/apps/nagara-eikaiwa/6.png
     alt: 統計。連続日数、聞いた例文、定着度
 requirements: Android 10 以上、iOS 26 以上の iPhone に対応する予定です。
