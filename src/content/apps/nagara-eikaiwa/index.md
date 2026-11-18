@@ -12,7 +12,7 @@ screenshots:
   - src: ../../../assets/apps/nagara-eikaiwa/1.png
     alt: ホーム。場面を選んで ▶ 聞くを押すだけで、例文を順に聞ける
   - src: ../../../assets/apps/nagara-eikaiwa/2.png
-    alt: 日本語から。訳を聞いて、英語で言ってみる
+    alt: 日本語から。訳と解説を聞いて、英語で言ってみる
   - src: ../../../assets/apps/nagara-eikaiwa/3.png
     alt: 答え合わせ。英文と相手の返し、ていねい・くだけた言い方、解説まで音声で
   - src: ../../../assets/apps/nagara-eikaiwa/4.png
